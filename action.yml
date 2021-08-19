@@ -1,0 +1,69 @@
+name: "DocFX Setup"
+description: ""
+inputs:
+  github-token:
+    description: ''
+    default: ''
+    
+  docs-directory:
+    description: ''
+    default: '$PWD/docs'
+    
+  newtonsoftjson-version:
+    description: ''
+    default: '11.0.2'
+      
+  sandcastlexrefgenerator-directory:
+    description: ''
+    default: './build/SandcastleXrefGenerator'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Setup .NET 5
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Ensure NuGet Source
+      uses: fabriciomurta/ensure-nuget-source@v1
+      with:
+        name: 'nuget.org'
+        url: 'https://api.nuget.org/v3/index.json'
+
+    - name: Setup BUTR GPR
+      uses: actions/setup-dotnet@master
+      with:
+        source-url: https://nuget.pkg.github.com/BUTR/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{inputs.github-token}}
+        
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: 'latest'
+        
+    - name: Generating Newtonsoft.Json xref maps
+      run: >-
+        if (-Not Test-Path -Path '${{inputs.sandcastlexrefgenerator-directory}}') { Return };
+        dotnet run -p ${{inputs.sandcastlexrefgenerator-directory}} -- `
+            Newtonsoft.Json ${{inputs.newtonsoftjson-version}} netstandard2.0 `
+            https://www.newtonsoft.com/json/help/html/ `
+            ${{inputs.docs-directory}}/xrefs/Newtonsoft.Json-xrefmap.yml
+      shell: pwsh
+        
+    #- name: DocFx.Plugin.LastModified
+    #  run: >-
+    #    dotnet build build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output docs/_template/last-modified/plugins;
+    #  shell: pwsh
