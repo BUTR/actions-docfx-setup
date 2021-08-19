@@ -56,7 +56,7 @@ runs:
         
     - name: Generating Newtonsoft.Json xref maps
       run: >-
-        if (-Not Test-Path -Path '${{inputs.sandcastlexrefgenerator-directory}}') { Return };
+        if (-Not (Test-Path -Path '${{inputs.sandcastlexrefgenerator-directory}}')) { Return };
         dotnet run -p ${{inputs.sandcastlexrefgenerator-directory}} -- `
             Newtonsoft.Json ${{inputs.newtonsoftjson-version}} netstandard2.0 `
             https://www.newtonsoft.com/json/help/html/ `
