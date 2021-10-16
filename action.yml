@@ -12,10 +12,6 @@ inputs:
   newtonsoftjson-version:
     description: ''
     default: '11.0.2'
-      
-  sandcastlexrefgenerator-directory:
-    description: ''
-    default: './build/SandcastleXrefGenerator'
 
 runs:
   using: "composite"
@@ -56,14 +52,13 @@ runs:
         
     - name: Generating Newtonsoft.Json xref maps
       run: >-
-        if (-Not (Test-Path -Path '${{inputs.sandcastlexrefgenerator-directory}}')) { Return };
-        dotnet run -p ${{inputs.sandcastlexrefgenerator-directory}} -- `
+        dotnet run --project ${{ github.action_path }}/build/SandcastleXrefGenerator -- `
             Newtonsoft.Json ${{inputs.newtonsoftjson-version}} netstandard2.0 `
             https://www.newtonsoft.com/json/help/html/ `
             ${{inputs.docs-directory}}/xrefs/Newtonsoft.Json-xrefmap.yml
       shell: pwsh
-        
-    #- name: DocFx.Plugin.LastModified
-    #  run: >-
-    #    dotnet build build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output docs/_template/last-modified/plugins;
-    #  shell: pwsh
+
+    - name: Build DocFx.Plugin.LastModified
+      run: >-
+        dotnet build --project ${{ github.action_path }}/build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
+      shell: pwsh
