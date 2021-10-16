@@ -60,5 +60,5 @@ runs:
 
     - name: Build DocFx.Plugin.LastModified
       run: >-
-        dotnet build --project ${{ github.action_path }}/build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
+        dotnet build ${{ github.action_path }}/build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
       shell: pwsh
