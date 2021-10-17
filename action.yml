@@ -8,7 +8,11 @@ inputs:
   docs-directory:
     description: ''
     default: '$PWD/docs'
-    
+
+  docfx-version:
+    description: ''
+    default: '2.58.4'
+
   newtonsoftjson-version:
     description: ''
     default: '11.0.2'
@@ -61,4 +65,9 @@ runs:
     - name: Build DocFx.Plugin.LastModified
       run: >-
         dotnet build ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
+      shell: pwsh
+
+    - name: Install DocFX
+      run: >-
+        nuget install docfx.console -Version ${{inputs.docfx-version}} -ExcludeVersion;
       shell: pwsh
