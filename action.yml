@@ -71,3 +71,10 @@ runs:
       run: >-
         nuget install docfx.console -Version ${{inputs.docfx-version}} -ExcludeVersion;
       shell: pwsh
+      
+    - name: Global Long Path Support
+      run: >-
+        New-Item -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\AppContext'
+        New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\AppContext' -Name 'Switch.System.IO.UseLegacyPathHandling' -Value 'false'
+        New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\AppContext' -Name 'Switch.System.IO.BlockLongPaths' -Value 'false'
+      shell: pwsh
