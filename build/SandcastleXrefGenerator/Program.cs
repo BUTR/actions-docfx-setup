@@ -34,7 +34,7 @@ namespace SandcastleXrefGenerator
             file.Directory!.Create();
             await using var stream = file.CreateText();
             await stream.WriteLineAsync("### YamlMime:ManagedReference");
-            serializer.Serialize(file.CreateText(), map);
+            serializer.Serialize(stream, map);
             return 0;
         }
 
