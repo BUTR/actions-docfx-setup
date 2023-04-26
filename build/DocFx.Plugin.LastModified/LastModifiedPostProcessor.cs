@@ -30,7 +30,7 @@ namespace DocFx.Plugin.LastModified
             var versionInfo = Assembly.GetExecutingAssembly()
                                   .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                                   ?.InformationalVersion ??
-                              Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                              Assembly.GetExecutingAssembly().GetName().Version?.ToString();
             Logger.LogInfo($"Version: {versionInfo}");
             Logger.LogInfo("Begin adding last modified date to items...");
 

@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "SandcastleXrefGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "Newtonsoft.Json 13.0.1 netstandard2.0 https://www.newtonsoft.com/json/help/html/ xrefs/Newtonsoft.Json-xrefmap.yml",
+      "environmentVariables": {
+        
+      }
+    }
+  }
+}

@@ -32,6 +32,8 @@ namespace SandcastleXrefGenerator
             var serializer = new SerializerBuilder().Build();
             var file = new FileInfo(args[4]);
             file.Directory!.Create();
+            await using var stream = file.CreateText();
+            await stream.WriteLineAsync("### YamlMime:ManagedReference");
             serializer.Serialize(file.CreateText(), map);
             return 0;
         }
@@ -50,22 +52,21 @@ namespace SandcastleXrefGenerator
             foreach (var entry in zip.Entries)
             {
                 // We assume there's just one assembly, for simplicity.
-                if (entry.Key.StartsWith(prefix) && entry.Key.EndsWith(".dll"))
-                {
-                    using var stream = entry.OpenEntryStream();
-                    // Mono.Cecil requires the stream to be seekable. It's simplest
-                    // just to copy the whole DLL to a MemoryStream and pass that to Cecil.
-                    var ms = new MemoryStream();
-                    stream.CopyTo(ms);
-                    ms.Position = 0;
-                    return ModuleDefinition.ReadModule(ms);
-                }
+                if (!entry.Key.StartsWith(prefix) || !entry.Key.EndsWith(".dll")) continue;
+                
+                using var stream = entry.OpenEntryStream();
+                // Mono.Cecil requires the stream to be seekable. It's simplest
+                // just to copy the whole DLL to a MemoryStream and pass that to Cecil.
+                var ms = new MemoryStream();
+                stream.CopyTo(ms);
+                ms.Position = 0;
+                return ModuleDefinition.ReadModule(ms);
             }
 
             throw new Exception($"No file found in package starting with '{prefix}'");
         }
 
-        private static XRefMap BuildXRefMap(ModuleDefinition module, string baseUrl) => new XRefMap
+        private static XRefMap BuildXRefMap(ModuleDefinition module, string baseUrl) => new()
         {
             BaseUrl = baseUrl,
             References = module.Types
@@ -77,9 +78,8 @@ namespace SandcastleXrefGenerator
         private static XRefSpec CreateXRefSpec(TypeDefinition type)
         {
             if (!type.IsPublic)
-            {
                 return null;
-            }
+            
             return new XRefSpec
             {
                 Name = type.Name, // TODO: Get the name with <T> etc in
