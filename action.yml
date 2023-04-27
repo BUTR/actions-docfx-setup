@@ -66,6 +66,7 @@ runs:
     - run: dotnet pack _actions_docfx/src/docfx -c Release -o ./drop/nuget
       shell: pwsh
     - run: dotnet nuget add source _actions_docfx/drop/nuget --name local-packages
+      working-directory: _actions_docfx
       shell: pwsh
     - run: dotnet tool update --global docfx
       working-directory: _actions_docfx
