@@ -54,12 +54,12 @@ runs:
       with:
         node-version: 16
     - run: npm install
-      working-directory: templates
+      working-directory: build/docfx/templates
       shell: pwsh
     - run: npm run build
-      working-directory: templates
+      working-directory: build/docfx/templates
       shell: pwsh
-    - run: dotnet pack src/docfx -c Release -o ./drop/nuget
+    - run: dotnet pack build/docfx/src/docfx -c Release -o ./drop/nuget
       shell: pwsh
     - run: dotnet tool update --global docfx
       shell: pwsh
