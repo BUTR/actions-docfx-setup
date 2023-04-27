@@ -50,6 +50,10 @@ runs:
       run: dotnet build ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
       shell: pwsh
 
-    - name: Install DocFX
-      run: dotnet tool update -g docfx
-      shell: pwsh
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install
+    - run: npm run build
+    - run: dotnet pack -c Release /p:Version=2.60.0 -o ./drop/nuget
+    - run: dotnet tool install -g --add-source ./drop/nuget docfx
