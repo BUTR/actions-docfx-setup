@@ -50,9 +50,9 @@ runs:
       run: dotnet build ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
       shell: pwsh
 
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v3
       with:
-        name: BUTR/docfx
+        repository: BUTR/docfx
         path: _actions_docfx
     - uses: actions/setup-node@v3
       with:
