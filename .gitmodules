@@ -1,8 +1,0 @@
-[submodule "docfx"]
-	path = docfx
-	url = https://github.com/BUTR/docfx
-	branch = main
-[submodule "build/docfx"]
-	path = build/docfx
-	url = https://github.com/BUTR/docfx
-	branch = main
