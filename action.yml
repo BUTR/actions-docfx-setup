@@ -54,6 +54,8 @@ runs:
       with:
         node-version: 16
     - run: npm install
+      working-directory: templates
     - run: npm run build
-    - run: dotnet pack -c Release /p:Version=2.60.0 -o ./drop/nuget
-    - run: dotnet tool install -g --add-source ./drop/nuget docfx
+      working-directory: templates
+    - run: dotnet pack src/docfx -c Release -o ./drop/nuget
+    - run: dotnet tool update --global docfx
