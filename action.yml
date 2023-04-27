@@ -63,10 +63,7 @@ runs:
     - run: npm run build
       working-directory: _actions_docfx/templates
       shell: pwsh
-    - run: dotnet pack _actions_docfx/src/docfx -c Release -o ./drop/nuget
-      shell: pwsh
-    - run: dotnet nuget add source drop/nuget --name local-packages
-      working-directory: _actions_docfx
+    - run: dotnet pack _actions_docfx/src/docfx -c Release -o _actions_docfx/drop/nuget
       shell: pwsh
     - run: dotnet tool update --global docfx
       working-directory: _actions_docfx
