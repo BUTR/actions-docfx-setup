@@ -21,7 +21,7 @@ runs:
   using: "composite"
   steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
         fetch-depth: 0
@@ -50,16 +50,20 @@ runs:
       run: dotnet build ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
       shell: pwsh
 
+    - uses: actions/checkout@master
+      with:
+        name: BUTR/docfx
+        path: _actions_docfx
     - uses: actions/setup-node@v3
       with:
         node-version: 16
     - run: npm install
-      working-directory: build/docfx/templates
+      working-directory: _actions_docfx/templates
       shell: pwsh
     - run: npm run build
-      working-directory: build/docfx/templates
+      working-directory: _actions_docfx/templates
       shell: pwsh
-    - run: dotnet pack build/docfx/src/docfx -c Release -o ./drop/nuget
+    - run: dotnet pack _actions_docfx/src/docfx -c Release -o ./drop/nuget
       shell: pwsh
     - run: dotnet tool update --global docfx
       shell: pwsh
