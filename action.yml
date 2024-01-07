@@ -11,7 +11,7 @@ inputs:
 
   docfx-version:
     description: ''
-    default: '2.66.1'
+    default: '2.74.1'
 
   newtonsoftjson-version:
     description: ''
