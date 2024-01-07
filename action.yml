@@ -51,24 +51,24 @@ runs:
       shell: pwsh
 
 # When a custom fork is needed
-    - uses: actions/checkout@v3
-      with:
-        repository: BUTR/docfx
-        path: _actions_docfx
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-    - run: npm install
-      working-directory: _actions_docfx/templates
-      shell: pwsh
-    - run: npm run build
-      working-directory: _actions_docfx/templates
-      shell: pwsh
-    - run: dotnet pack _actions_docfx/src/docfx -c Release -o _actions_docfx/drop/nuget
-      shell: pwsh
-    - run: dotnet tool update --global docfx
-      working-directory: _actions_docfx
-      shell: pwsh
-#    - name: Install DocFX
-#      run: dotnet tool update -g docfx
+#    - uses: actions/checkout@v3
+#      with:
+#        repository: BUTR/docfx
+#        path: _actions_docfx
+#    - uses: actions/setup-node@v4
+#      with:
+#        node-version: 16
+#    - run: npm install
+#      working-directory: _actions_docfx/templates
 #      shell: pwsh
+#    - run: npm run build
+#      working-directory: _actions_docfx/templates
+#      shell: pwsh
+#    - run: dotnet pack _actions_docfx/src/docfx -c Release -o _actions_docfx/drop/nuget
+#      shell: pwsh
+#    - run: dotnet tool update --global docfx
+#      working-directory: _actions_docfx
+#      shell: pwsh
+    - name: Install DocFX
+      run: dotnet tool update -g docfx
+      shell: pwsh
