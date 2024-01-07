@@ -26,10 +26,10 @@ runs:
         submodules: recursive
         fetch-depth: 0
 
-    - name: Setup .NET 7
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 7.x.x
+        dotnet-version: 8.x.x
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -47,7 +47,7 @@ runs:
       shell: pwsh
 
     - name: Build DocFx.Plugin.LastModified
-      run: dotnet build ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
+      run: dotnet publish ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
       shell: pwsh
 
 # When a custom fork is needed
