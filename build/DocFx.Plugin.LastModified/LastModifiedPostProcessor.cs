@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Docfx.Common;
 using DocFx.Plugin.LastModified.Helpers;
+using Docfx.Plugins;
 using HtmlAgilityPack;
 using LibGit2Sharp;
-using Microsoft.DocAsCode.Common;
-using Microsoft.DocAsCode.Plugins;
 
 namespace DocFx.Plugin.LastModified
 {
@@ -38,8 +38,8 @@ namespace DocFx.Plugin.LastModified
             var gitDirectory = Repository.Discover(manifest.SourceBasePath);
             if (gitDirectory != null) _repo = new Repository(gitDirectory);
 
-            foreach (var manifestItem in manifest.Files.Where(x => x.DocumentType == "Conceptual"))
-            foreach (var manifestItemOutputFile in manifestItem.OutputFiles)
+            foreach (var manifestItem in manifest.Files.Where(x => x.Type == "Conceptual"))
+            foreach (var manifestItemOutputFile in manifestItem.Output)
             {
                 var sourcePath = Path.Combine(manifest.SourceBasePath, manifestItem.SourceRelativePath);
                 var outputPath = Path.Combine(outputFolder, manifestItemOutputFile.Value.RelativePath);

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Docfx.Common;
 using LibGit2Sharp;
-using Microsoft.DocAsCode.Common;
 
 namespace DocFx.Plugin.LastModified.Helpers
 {
