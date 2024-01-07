@@ -15,6 +15,7 @@
     <Authors>Still Hsu</Authors>
     <Product />
     <PackageVersion>1.2.5</PackageVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
     <PackageReference Include="htmlagilitypack" Version="1.11.54" />
     <PackageReference Include="libgit2sharp" Version="0.29.0" />
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
   </ItemGroup>
 
 </Project>
