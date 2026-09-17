@@ -10,8 +10,8 @@ inputs:
     default: '$PWD/docs'
 
   docfx-version:
-    description: ''
-    default: '2.74.1'
+    description: 'DocFX to install. The bundled LastModified plugin is compiled against this same version.'
+    default: '2.78.5'
 
   newtonsoftjson-version:
     description: ''
@@ -47,7 +47,11 @@ runs:
       shell: pwsh
 
     - name: Build DocFx.Plugin.LastModified
-      run: dotnet publish ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
+      # -p:DocfxVersion ties the plugin's Docfx.Plugins reference to the docfx
+      # installed above. They have to match: docfx resolves IPostProcessor
+      # against its own copy, and a mismatch is not an error, just a skipped
+      # plugin and a docs build that still goes green.
+      run: dotnet publish ${{ github.action_path }}/build/DocFx.Plugin.LastModified --configuration Release -p:DocfxVersion=${{inputs.docfx-version}} --output ${{inputs.docs-directory}}/_template/last-modified/plugins;
       shell: pwsh
 
 # When a custom fork is needed
@@ -70,5 +74,5 @@ runs:
 #      working-directory: _actions_docfx
 #      shell: pwsh
     - name: Install DocFX
-      run: dotnet tool update -g docfx
+      run: dotnet tool update -g docfx --version ${{inputs.docfx-version}}
       shell: pwsh

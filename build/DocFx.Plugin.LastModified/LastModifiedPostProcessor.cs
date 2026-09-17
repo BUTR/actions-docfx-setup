@@ -1,10 +1,11 @@
-namespace DocFx.Plugin.LastModified;
+﻿namespace DocFx.Plugin.LastModified;
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Docfx.Common;
 using Docfx.Plugins;
 using Processors;
@@ -28,7 +29,7 @@ public class LastModifiedPostProcessor : IPostProcessor
         => metadata;
 
     /// <inheritdoc />
-    public Manifest Process(Manifest manifest, string outputFolder)
+    public Manifest Process(Manifest manifest, string outputFolder, CancellationToken cancellationToken)
     {
         var versionInfo = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -37,6 +38,8 @@ public class LastModifiedPostProcessor : IPostProcessor
 
         foreach (var manifestItem in manifest.Files)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var processor = Processors.FirstOrDefault(p => p.Supports(manifestItem.Type));
             if (processor == null)
             {
