@@ -21,6 +21,18 @@
          mismatch surfaces as a silent ReflectionTypeLoadException. action.yml
          passes its docfx-version input in. -->
     <DocfxVersion Condition="'$(DocfxVersion)' == ''">2.78.5</DocfxVersion>
+
+    <!-- Publish for the host RID so the native git2 lands next to the assembly
+         instead of under runtimes/<rid>/native/. DocFX loads this plugin with
+         Assembly.LoadFrom, which brings no deps.json with it, so nothing walks
+         that runtimes tree and LibGit2Sharp fails with DllNotFoundException.
+         Its own GlobalSettings.NativeLibraryPath is not a fix: it looks for
+         'git2-<hash>.so' while the shipped file is 'libgit2-<hash>.so', so it
+         works on Windows and silently misses on Linux. A flattened publish
+         lets the runtime's default probing find it, which tries both spellings.
+         SelfContained=false keeps this a plain plugin, not a packaged app. -->
+    <RuntimeIdentifier>$(NETCoreSdkPortableRuntimeIdentifier)</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
